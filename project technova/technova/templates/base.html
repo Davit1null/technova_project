@@ -1,0 +1,86 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{% block title %}Technova: phones, laptops and gadgets{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {# Runs before first paint so the saved theme never flashes the wrong colours. #}
+  <script>
+    (function () {
+      var root = document.documentElement, theme = null;
+      try { theme = localStorage.getItem('technova-theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      root.dataset.theme = theme;
+      root.classList.add('js');
+    })();
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="logo" href="{% url 'home' %}">technova</a>
+    <form class="search" action="{% url 'product_list' %}" method="get" role="search">
+      <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Search phones, laptops, headphones" aria-label="Search products">
+      <button type="submit">Search</button>
+    </form>
+    <nav class="account" aria-label="Account">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}">{{ user.username }}</a>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit" class="link-btn">Log out</button></form>
+      {% else %}
+        <a href="{% url 'login' %}">Log in</a>
+        <a href="{% url 'register' %}">Sign up</a>
+      {% endif %}
+      <a class="cart-link" href="{% url 'cart' %}">Cart{% if cart_count %}<span class="count">{{ cart_count }}</span>{% endif %}</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme">
+        <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+      </button>
+    </nav>
+  </div>
+  <nav class="cats" aria-label="Categories">
+    <div class="wrap">
+      <a href="{% url 'product_list' %}">All products</a>
+      {% for c in nav_categories %}<a href="{{ c.get_absolute_url }}">{{ c.name }}</a>{% endfor %}
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  {% if messages %}
+    <ul class="messages" role="status">
+      {% for message in messages %}<li class="msg {{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot">
+    <div class="foot-about">
+      <h3>TechNova – Your World of Technology</h3>
+      <p>
+        Your trusted destination for the latest smartphones, laptops,
+        gaming accessories, electronics and innovative gadgets.
+      </p>
+    </div>
+    <div class="foot-contact">
+      <p>Phone: +995 555 00 00 00</p>
+      <p>Email: support@technova.ge</p>
+      <p>Location: Tbilisi, Georgia</p>
+    </div>
+    <p class="muted foot-legal">
+      © 2026 TechNova. All rights reserved. Prices are in Georgian lari (₾).
+    </p>
+  </div>
+</footer>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
