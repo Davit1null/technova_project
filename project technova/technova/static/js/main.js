@@ -11,12 +11,9 @@
     });
   });
 
-  /* ------------------------------------------------------------------
-     Light / dark theme
-     The saved choice is applied before first paint by a tiny script in
-     base.html. Here we handle the toggle, and follow the system setting
-     as long as the visitor has not picked a theme themselves.
-     ------------------------------------------------------------------ */
+  /* ---------------------- 
+     Light / dark theme 
+     ----------------------  */
   var THEME_KEY = 'technova-theme';
   var toggle = document.querySelector('[data-theme-toggle]');
 
@@ -81,7 +78,7 @@
   }
 
   /* ------------------------------------------------------------------
-     Header: soft shadow once the page scrolls; mark the current category
+     Header: soft shadow once the page scrolls; 
      ------------------------------------------------------------------ */
   var header = document.querySelector('.site-header');
   if (header) {

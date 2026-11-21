@@ -1,7 +1,6 @@
-/* ==========================================================================
-   Technova: storefront styles
-   Light + dark themes are driven by [data-theme] on <html> (see base.html / main.js).
-   ========================================================================== */
+/* =========== 
+   style
+   ===========  */
 
 :root {
   color-scheme: light;
